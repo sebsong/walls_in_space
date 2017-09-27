@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ShipController : MonoBehaviour {
 	public float spinSpeed;
 	Rigidbody rb;
 	float boost;
-	bool boostReady;
+	public static bool boostReady;
 	bool isBoosting;
 
 	public Slider boostSlider;
@@ -18,6 +19,8 @@ public class ShipController : MonoBehaviour {
 	public AudioSource engine;
 	public AudioSource take_off;
 
+	public static bool inMenu;
+
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
@@ -26,6 +29,11 @@ public class ShipController : MonoBehaviour {
 		isBoosting = false;
 
 		boostSlider.value = 0f;
+
+		if (inMenu) {
+			AddBoost (100f);
+			inMenu = false;
+		}
 	}
 	
 	// Update is called once per frame
@@ -34,6 +42,10 @@ public class ShipController : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.R)) {
 			Respawn ();
+		}
+
+		if (Input.GetKeyDown (KeyCode.M)) {
+			SceneManager.LoadScene ("menu");
 		}
 
 		if (boostReady && Input.GetKeyDown (KeyCode.Space)) {
@@ -53,7 +65,7 @@ public class ShipController : MonoBehaviour {
 		transform.Rotate (rotDir * spinSpeed * Time.deltaTime, 0, 0);
 	}
 
-	public void AddBoost (float boostVal) {
+	void AddBoost (float boostVal) {
 		if (boost < 100f) {
 			float newBoost = boost + boostVal;
 			if (newBoost >= 100f) {
@@ -93,6 +105,9 @@ public class ShipController : MonoBehaviour {
 	void Respawn () {
 		boost = 0f;
 		boostSlider.value = boost;
+
+		engine.Stop ();
+		boostReadyEffect.SetActive (false);
 
 		boostReady = false;
 		isBoosting = false;

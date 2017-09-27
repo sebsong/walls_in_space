@@ -53,7 +53,7 @@ public class ShipController : MonoBehaviour {
 		transform.Rotate (rotDir * spinSpeed * Time.deltaTime, 0, 0);
 	}
 
-	void AddBoost (float boostVal) {
+	public void AddBoost (float boostVal) {
 		if (boost < 100f) {
 			float newBoost = boost + boostVal;
 			if (newBoost >= 100f) {

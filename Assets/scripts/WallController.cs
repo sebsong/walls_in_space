@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallController : MonoBehaviour {
+public abstract class WallController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

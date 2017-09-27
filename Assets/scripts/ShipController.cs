@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShipController : MonoBehaviour {
 	public float spinSpeed;
@@ -9,12 +10,22 @@ public class ShipController : MonoBehaviour {
 	bool boostReady;
 	bool isBoosting;
 
+	public Slider boostSlider;
+	public GameObject boostReadyEffect;
+
+	public AudioSource music;
+	public AudioSource zoom;
+	public AudioSource engine;
+	public AudioSource take_off;
+
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
 		boost = 0f;
 		boostReady = false;
 		isBoosting = false;
+
+		boostSlider.value = 0f;
 	}
 	
 	// Update is called once per frame
@@ -28,6 +39,10 @@ public class ShipController : MonoBehaviour {
 		if (boostReady && Input.GetKeyDown (KeyCode.Space)) {
 			StartCoroutine ("Boost");
 		}
+
+//		if (Input.GetKeyDown (KeyCode.X)) {
+//			AddBoost (100f);
+//		}
 	}
 
 	void Spin () {
@@ -44,13 +59,18 @@ public class ShipController : MonoBehaviour {
 			if (newBoost >= 100f) {
 				boost = 100f;
 				boostReady = true;
+				boostReadyEffect.SetActive (true);
+				engine.Play ();
 			} else {
 				boost = newBoost;
 			}
+			boostSlider.value = boost;
 		}
 	}
 
 	IEnumerator Boost () {
+		engine.Stop ();
+		take_off.Play ();
 		isBoosting = true;
 		rb.isKinematic = true;
 		float speed = 0f;
@@ -66,10 +86,14 @@ public class ShipController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter (Collider coll) {
-		AddBoost (1f);
+		AddBoost (WallSpawner.speed / 10f);
+		zoom.Play ();
 	}
 
 	void Respawn () {
+		boost = 0f;
+		boostSlider.value = boost;
+
 		boostReady = false;
 		isBoosting = false;
 
@@ -81,5 +105,7 @@ public class ShipController : MonoBehaviour {
 
 		transform.position = Vector3.zero;
 		transform.rotation = Quaternion.Euler (0, 90, 0);
+
+		music.Play ();
 	}
 }

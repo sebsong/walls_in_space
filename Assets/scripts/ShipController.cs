@@ -18,20 +18,24 @@ public class ShipController : MonoBehaviour {
 	public AudioSource zoom;
 	public AudioSource engine;
 	public AudioSource take_off;
+	public AudioSource hit;
+	public AudioSource crash;
 
 	public static bool inMenu;
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
-		boost = 0f;
+
+		boost = 10f;
+		boostSlider.value = boost;
+
 		boostReady = false;
 		isBoosting = false;
 
-		boostSlider.value = 0f;
 
 		if (inMenu) {
-			AddBoost (100f);
+			ModifyBoost (100f);
 			inMenu = false;
 		}
 	}
@@ -65,16 +69,27 @@ public class ShipController : MonoBehaviour {
 		transform.Rotate (rotDir * spinSpeed * Time.deltaTime, 0, 0);
 	}
 
-	void AddBoost (float boostVal) {
-		if (boost < 100f) {
+	void ModifyBoost (float boostVal) {
+		if (boost < 100f && boost >= 0f) {
+
 			float newBoost = boost + boostVal;
+
 			if (newBoost >= 100f) {
 				boost = 100f;
 				boostReady = true;
 				boostReadyEffect.SetActive (true);
 				engine.Play ();
+			} else if (newBoost < 0f) {
+				boost = 0f;
+				crash.Play ();
+				rb.useGravity = true;
 			} else {
 				boost = newBoost;
+				if (boostVal > 0f) {
+					zoom.Play ();
+				} else {
+					hit.Play ();
+				}
 			}
 			boostSlider.value = boost;
 		}
@@ -94,33 +109,34 @@ public class ShipController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter (Collision coll) {
-		rb.useGravity = true;
+		ModifyBoost (-WallSpawner.speed / 5f);
 	}
 
 	void OnTriggerEnter (Collider coll) {
-		AddBoost (WallSpawner.speed / 10f);
+		ModifyBoost (WallSpawner.speed / 10f);
 		zoom.Play ();
 	}
 
 	void Respawn () {
-		boost = 0f;
-		boostSlider.value = boost;
-
-		engine.Stop ();
-		boostReadyEffect.SetActive (false);
-
-		boostReady = false;
-		isBoosting = false;
-
-		rb.isKinematic = false;
-		rb.useGravity = false;
-
-		rb.velocity = Vector3.zero;
-		rb.angularVelocity = Vector3.zero;
-
-		transform.position = Vector3.zero;
-		transform.rotation = Quaternion.Euler (0, 90, 0);
-
-		music.Play ();
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+//		boost = 0f;
+//		boostSlider.value = boost;
+//
+//		engine.Stop ();
+//		boostReadyEffect.SetActive (false);
+//
+//		boostReady = false;
+//		isBoosting = false;
+//
+//		rb.isKinematic = false;
+//		rb.useGravity = false;
+//
+//		rb.velocity = Vector3.zero;
+//		rb.angularVelocity = Vector3.zero;
+//
+//		transform.position = Vector3.zero;
+//		transform.rotation = Quaternion.Euler (0, 90, 0);
+//
+//		music.Play ();
 	}
 }

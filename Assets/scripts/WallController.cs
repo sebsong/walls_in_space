@@ -4,17 +4,19 @@ using UnityEngine;
 
 public abstract class WallController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-
-	}
-	
 	// Update is called once per frame
-	void Update () {
+	protected virtual void Update () {
 		Move ();
 	}
 
-	void Move (){
+	protected virtual void Move (){
 		transform.position += Vector3.back * WallSpawner.speed * Time.deltaTime;
 	}
+
+	void OnTriggerEnter(Collider coll) {
+//		StartCoroutine ("Glow");
+	}
+
+//	IEnumerator Glow() {
+//	}
 }

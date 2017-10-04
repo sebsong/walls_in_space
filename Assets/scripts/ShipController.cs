@@ -7,12 +7,14 @@ using UnityEngine.SceneManagement;
 public class ShipController : MonoBehaviour {
 	public float spinSpeed;
 	Rigidbody rb;
+
 	float boost;
 	public static bool boostReady;
 	bool isBoosting;
-
 	public Slider boostSlider;
 	public GameObject boostReadyEffect;
+
+	public int lives;
 
 	public AudioSource music;
 	public AudioSource zoom;

@@ -16,6 +16,8 @@ public class WallSpawner : MonoBehaviour {
 	Queue<Transform> wall_pool;
 	Queue<Transform> wall_active;
 
+	//public List<GameObject> ;
+
 	float cooldown;
 
 	// Use this for initialization

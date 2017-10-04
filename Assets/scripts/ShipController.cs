@@ -23,6 +23,8 @@ public class ShipController : MonoBehaviour {
 
 	public static bool inMenu;
 
+	private bool isHit;
+
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
@@ -33,6 +35,7 @@ public class ShipController : MonoBehaviour {
 		boostReady = false;
 		isBoosting = false;
 
+		isHit = false;
 
 		if (inMenu) {
 			ModifyBoost (100f);
@@ -82,12 +85,11 @@ public class ShipController : MonoBehaviour {
 			} else if (newBoost < 0f) {
 				boost = 0f;
 				crash.Play ();
+				rb.constraints = RigidbodyConstraints.None;
 				rb.useGravity = true;
 			} else {
 				boost = newBoost;
-				if (boostVal > 0f) {
-					zoom.Play ();
-				} else {
+				if (boostVal < 0f) {
 					hit.Play ();
 				}
 			}
@@ -109,12 +111,16 @@ public class ShipController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter (Collision coll) {
+		isHit = true;
 		ModifyBoost (-WallSpawner.speed / 5f);
 	}
 
 	void OnTriggerEnter (Collider coll) {
-		ModifyBoost (WallSpawner.speed / 10f);
-		zoom.Play ();
+		if (!isHit) {
+			ModifyBoost (WallSpawner.speed / 10f);
+			zoom.Play ();
+		}
+		isHit = false;
 	}
 
 	void Respawn () {

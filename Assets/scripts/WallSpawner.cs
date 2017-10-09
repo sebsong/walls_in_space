@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WallSpawner : MonoBehaviour {
 	public Transform wall;
+	public Transform player;
 
 	public float spawn_time;
 	public float base_spawn_time;
@@ -16,9 +17,9 @@ public class WallSpawner : MonoBehaviour {
 	Queue<Transform> wall_pool;
 	Queue<Transform> wall_active;
 
-	//public List<GameObject> ;
-
 	float cooldown;
+
+	float max_dist;
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +28,9 @@ public class WallSpawner : MonoBehaviour {
 		cooldown = 0f;
 		base_speed = 10f;
 		speed = base_speed;
+
+		max_dist = Vector3.Distance (player.position, transform.position) + 20f;
+
 	}
 	
 	// Update is called once per frame
@@ -74,7 +78,7 @@ public class WallSpawner : MonoBehaviour {
 		Transform active_wall;
 
 		active_wall = wall_active.Peek ();
-		if (active_wall.position.z < -10f) {
+		if (Vector3.Distance (active_wall.position, transform.position) > max_dist) {
 			active_wall.gameObject.SetActive (false);
 			wall_pool.Enqueue (wall_active.Dequeue ());
 		}

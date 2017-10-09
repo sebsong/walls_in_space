@@ -47,6 +47,7 @@ public class ShipController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//print (transform.localRotation.eulerAngles);
 		Spin ();
 
 		if (Input.GetKeyDown (KeyCode.R)) {
@@ -127,24 +128,5 @@ public class ShipController : MonoBehaviour {
 
 	void Respawn () {
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
-//		boost = 0f;
-//		boostSlider.value = boost;
-//
-//		engine.Stop ();
-//		boostReadyEffect.SetActive (false);
-//
-//		boostReady = false;
-//		isBoosting = false;
-//
-//		rb.isKinematic = false;
-//		rb.useGravity = false;
-//
-//		rb.velocity = Vector3.zero;
-//		rb.angularVelocity = Vector3.zero;
-//
-//		transform.position = Vector3.zero;
-//		transform.rotation = Quaternion.Euler (0, 90, 0);
-//
-//		music.Play ();
 	}
 }

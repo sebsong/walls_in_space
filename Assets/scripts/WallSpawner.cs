@@ -35,9 +35,9 @@ public class WallSpawner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.R)) {
-			Reset ();
-		}
+//		if (Input.GetKeyDown (KeyCode.R)) {
+//			Reset ();
+//		}
 
 		if (cooldown <= 0) {
 			SpawnWall ();
@@ -84,17 +84,17 @@ public class WallSpawner : MonoBehaviour {
 		}
 	}
 
-	void Reset () {
-		foreach (Transform w in wall_pool) {
-			Destroy(w.gameObject);
-		}
-		foreach (Transform w in wall_active) {
-			Destroy(w.gameObject);
-		}
-		wall_pool.Clear ();
-		wall_active.Clear ();
-		cooldown = 0f;
-		spawn_time = base_spawn_time;
-		speed = base_speed;
-	}
+//	void Reset () {
+//		foreach (Transform w in wall_pool) {
+//			Destroy(w.gameObject);
+//		}
+//		foreach (Transform w in wall_active) {
+//			Destroy(w.gameObject);
+//		}
+//		wall_pool.Clear ();
+//		wall_active.Clear ();
+//		cooldown = 0f;
+//		spawn_time = base_spawn_time;
+//		speed = base_speed;
+//	}
 }

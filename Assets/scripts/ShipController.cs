@@ -47,7 +47,6 @@ public class ShipController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//print (transform.localRotation.eulerAngles);
 		Spin ();
 
 		if (Input.GetKeyDown (KeyCode.R)) {
@@ -70,9 +69,9 @@ public class ShipController : MonoBehaviour {
 	void Spin () {
 		float rotDir;
 
-		rotDir = Input.GetAxisRaw ("Horizontal");
+		rotDir = -Input.GetAxisRaw ("Horizontal");
 
-		transform.Rotate (rotDir * spinSpeed * Time.deltaTime, 0, 0);
+		transform.Rotate (0, 0, rotDir * spinSpeed * Time.deltaTime);
 	}
 
 	void ModifyBoost (float boostVal) {

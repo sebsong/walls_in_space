@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour {
+public class StarController : MonoBehaviour {
 
 	public Transform player;
 	public Transform follow;
@@ -14,7 +14,6 @@ public class CameraController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		transform.position = follow.position;
-		transform.localEulerAngles = new Vector3 (0, 0, player.localEulerAngles.z);
-
+		transform.localEulerAngles = new Vector3 (player.localEulerAngles.x, player.localEulerAngles.y + 180, 0);
 	}
 }

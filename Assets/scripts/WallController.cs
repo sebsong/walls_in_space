@@ -4,6 +4,13 @@ using UnityEngine;
 
 public abstract class WallController : MonoBehaviour {
 
+	Transform spawner;
+
+	void Start() {
+		spawner = GameObject.FindGameObjectWithTag ("wall_spawner").transform;
+
+	}
+
 	// Update is called once per frame
 	protected virtual void Update () {
 		Move ();
